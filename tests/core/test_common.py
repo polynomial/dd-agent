@@ -2,10 +2,10 @@ import logging
 import os
 import time
 import unittest
-
 from nose.plugins.attrib import attr
 from nose.plugins.skip import SkipTest
 
+from checks.collector import Collector
 from aggregator import MetricsAggregator
 from checks import (
     AgentCheck,
@@ -117,13 +117,6 @@ class TestCore(unittest.TestCase):
 
         self.assertEqual(self.ac.normalize("PauseTotalNs", "prefix", fix_case = True), "prefix.pause_total_ns")
         self.assertEqual(self.ac.normalize("Metric.wordThatShouldBeSeparated", "prefix", fix_case = True), "prefix.metric.word_that_should_be_separated")
-
-    def test_metadata(self):
-        c = Collector({"collect_instance_metadata": True}, None, {}, "foo")
-        metadata = c._get_metadata()
-        assert "hostname" in metadata
-        assert "socket-fqdn" in metadata
-        assert "socket-hostname" in metadata
 
     def test_service_check(self):
         check_name = 'test.service_check'
